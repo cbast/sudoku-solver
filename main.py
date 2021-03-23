@@ -18,8 +18,11 @@ class Element:
             if value in self.options:
                 self.options.remove(value)
                 if len(self.options) == 1:
-                    self.value = self.options[0]
-                    self.options = []
+                    self.setValue(self.options[0])
+
+    def setValue(self, value):
+        self.value = value
+        self.options = []
         
 
 
@@ -36,96 +39,77 @@ class Game:
                 self.columns[columnIndex].append(element)
                 self.squares[(columnIndex // 3) + (3*(rowIndex//3))].append(element)
 
-    def solve(self):
+    def show(self):
         for row in self.rows:
-            rowValues = [item.value for item in row if item.value != None]
-            for element in row:
+            values = [element.value for element in row]
+            print(values)
+
+
+
+    def removeExisting(self, elementTable):
+        for elementList in elementTable:
+            values = [item.value for item in elementList if item.value != None]
+            for element in elementList:
                 if element.value == None:
-                    element.updateValues(rowValues)
-        for column in self.columns:
-            columnValues = [item.value for item in column if item.value != None]
-            for element in column:
-                if element.value == None:
-                    element.updateValues(columnValues)
+                    element.updateValues(values)
+                    if element.value != None:
+                        return 1
+        return None
 
-        for square in self.squares:
-            squareValues = [item.value for item in square if item.value != None]
-            for element in square:
-                if element.value == None:
-                    element.updateValues(squareValues)
+    def findUnique(self, elementTable):
+        for elementList in elementTable:
+            elementPending = [element for element in elementList if element.value == None]
+            for element in elementPending:
+                for option in element.options:
+                    existingList = [element for element in elementPending if option in element.options]
+                    if len(existingList) == 1:
+                        element.setValue(option)
+                        return 1
+        return None
 
 
-
-
-
+    def solve(self):
+        if self.removeExisting(self.rows) != None:
+            return
+        if self.removeExisting(self.columns) != None:
+            return
+        if self.removeExisting(self.squares) != None:
+            return
+        
+        if self.findUnique(self.rows) != None:
+            return
+        if self.findUnique(self.columns) != None:
+            return
+        if self.findUnique(self.squares) != None:
+            return
+        
+        
 
 if __name__ == "__main__":
     init = []
-    init.append([2,None,None,       None,3,None,        4,5,None])
-    init.append([None,6,None,       9,1,None,           8,None,None])
-    init.append([None,None,None,    None,None,4,        None,None,None])
+    init.append([None,None,None,    None,5,None,        6,9,None])
+    init.append([2,None,5,          6,None,None,        None,None,None])
+    init.append([6,None,None,       None,None,7,        None,3,None])
 
-    init.append([None,4,3,          None,None,None,     5,None,7])
-    init.append([1,None,None,       None,None,None,     None,None,6])
-    init.append([7,None,6,          None,None,None,     1,8,None])
+    init.append([None,None,8,       None,2,None,        None,4,None])
+    init.append([4,None,None,       5,None,9,           None,None,8])
+    init.append([None,5,None,       None,3,None,        2,None,None])
     
-    init.append([None,None,None,    8,None,None,        None,None,None])
-    init.append([None,None,9,       None,2,5,           None,6,None])
-    init.append([None,8,5,          None,7,None,        None,None,3])
+    init.append([None,7,None,       1,None,None,        None,None,4])
+    init.append([None,None,None,    None,None,5,        1,None,7])
+    init.append([None,1,2,          None,7,None,        None,None,None])
 
     game = Game(init)
-    game.solve()
-    game.solve()
-    game.solve()
-    game.solve()
-    game.solve()
-    game.solve()
-    game.solve()
-    game.solve()
-    game.solve()
-    game.solve()
-    game.solve()
-    game.solve()
-    game.solve()
-    game.solve()
-    game.solve()
-    game.solve()
-    game.solve()
-    game.solve()
-    game.solve()
-    game.solve()
-    game.solve()
-    game.solve()
-    game.solve()
-    game.solve()
-    game.solve()
-    game.solve()
-    game.solve()
-    game.solve()
-    game.solve()
-    game.solve()
-    game.solve()
-    game.solve()
-    game.solve()
-    game.solve()
-    game.solve()
-    game.solve()
-    game.solve()
-    game.solve()
-    game.solve()
-    game.solve()
-    game.solve()
-    game.solve()
-
     print("\nInitialization")
-    for row in init:
-        print(row)
+    game.show()
+
+    for x in range(91):
+        game.solve()
+
 
     print("---------------------------")
     print("\nResults")
-    for row in game.rows:
-        values = [value.value for value in row]
-        print(values)
+    game.show()
         
 
 
