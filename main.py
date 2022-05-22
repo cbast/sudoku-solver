@@ -35,7 +35,8 @@ class Game:
                 element = Element(rowIndex, columnIndex, value)
                 self.rows[rowIndex].append(element)
                 self.columns[columnIndex].append(element)
-                self.squares[(columnIndex // 3) + (3*(rowIndex//3))].append(element)
+                self.squares[(columnIndex // 3) +
+                              (3*(rowIndex//3))].append(element)
 
     def show(self):
         for row in self.rows:
@@ -54,10 +55,12 @@ class Game:
 
     def findUnique(self, elementTable):
         for elementList in elementTable:
-            elementPending = [element for element in elementList if element.value is None]
+            elementPending = [
+                element for element in elementList if element.value is None]
             for element in elementPending:
                 for option in element.options:
-                    existingList = [element for element in elementPending if option in element.options]
+                    existingList = [
+                        element for element in elementPending if option in element.options]
                     if len(existingList) == 1:
                         element.setValue(option)
                         return 1
@@ -80,18 +83,9 @@ class Game:
 
 
 if __name__ == "__main__":
-    init = []
-    init.append([None, None, None,    None, 5, None,        6, 9, None])
-    init.append([2, None, 5,          6, None, None,        None, None, None])
-    init.append([6, None, None,       None, None, 7,        None, 3, None])
-
-    init.append([None, None, 8,       None, 2, None,        None, 4, None])
-    init.append([4, None, None,       5, None, 9,           None, None, 8])
-    init.append([None, 5, None,       None, 3, None,        2, None, None])
-
-    init.append([None, 7, None,       1, None, None,        None, None, 4])
-    init.append([None, None, None,    None, None, 5,        1, None, 7])
-    init.append([None, 1, 2,          None, 7, None,        None, None, None])
+    init = [[None, None, None, None, 5, None, 6, 9, None], [2, None, 5, 6, None, None, None, None, None], [6, None, None, None, None, 7, None, 3, None],
+            [None, None, 8, None, 2, None, None, 4, None], [4, None, None, 5, None, 9, None, None, 8], [None, 5, None, None, 3, None, 2, None, None],
+            [None, 7, None, 1, None, None, None, None, 4], [None, None, None, None, None, 5, 1, None, 7], [None, 1, 2, None, 7, None, None, None, None]]
 
     game = Game()
     print("\nInitialization")
