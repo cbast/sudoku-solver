@@ -1,3 +1,5 @@
+from board_dto import Board
+
 class Element:
     def __init__(self, row: int, column: int, value: int):
         self.options = []
@@ -25,12 +27,12 @@ class Element:
 
 
 class Game:
-    def __init__(self, start):
-        self.result = start
+    def __init__(self, start: Board):
+        self.result = start.board
         self.rows = [[], [], [], [], [], [], [], [], []]
         self.columns = [[], [], [], [], [], [], [], [], []]
         self.squares = [[], [], [], [], [], [], [], [], []]
-        for rowIndex, row in enumerate(start):
+        for rowIndex, row in enumerate(start.board):
             for columnIndex, value in enumerate(row):
                 element = Element(rowIndex, columnIndex, value)
                 self.rows[rowIndex].append(element)
@@ -82,8 +84,9 @@ class Game:
 
 
 if __name__ == "__main__":
-    # {"board":[[7,5,0,3,9,0,0,0,0],[1,0,4,0,6,8,0,0,0],[6,0,9,0,5,7,0,0,0],[2,0,3,5,0,0,0,0,0],[4,0,0,7,0,9,0,3,1],[0,9,7,1,0,3,6,4,0],[0,0,1,0,0,0,0,0,0],[5,4,8,0,0,2,7,1,6],[0,7,0,0,0,4,0,0,0]]}
-    init = [[7,5,0, 3,9,0, 0,0,0],
+    board: Board = Board.from_dict(
+        {"board": [
+            [7,5,0, 3,9,0, 0,0,0],
             [1,0,4, 0,6,8, 0,0,0],
             [6,0,9, 0,5,7, 0,0,0],
 
@@ -94,11 +97,9 @@ if __name__ == "__main__":
             [0,0,1, 0,0,0, 0,0,0],
             [5,4,8, 0,0,2, 7,1,6],
             [0,7,0, 0,0,4, 0,0,0]]
-    # init = [[0, 0, 0, 0, 5, 0, 6, 9, 0], [2, 0, 5, 6, 0, 0, 0, 0, 0], [6, 0, 0, 0, 0, 7, 0, 3, 0],
-    #         [0, 0, 8, 0, 2, 0, 0, 4, 0], [4, 0, 0, 5, 0, 9, 0, 0, 8], [0, 5, 0, 0, 3, 0, 2, 0, 0],
-    #         [0, 7, 0, 1, 0, 0, 0, 0, 4], [0, 0, 0, 0, 0, 5, 1, 0, 7], [0, 1, 2, 0, 7, 0, 0, 0, 0]]
+         })
 
-    game = Game(init)
+    game = Game(board)
     print("\nInitialization")
     game.show()
 
