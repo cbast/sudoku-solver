@@ -1,10 +1,10 @@
 class Element:
     def __init__(self, row: int, column: int, value: int):
         self.options = []
-        if (value is not None) and (0 < int(value) < 10):
+        if (value != 0) and (0 < int(value) < 10):
             self.value = int(value)
         else:
-            self.value = None
+            self.value = 0
             self.options = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
         self.row = row
@@ -25,18 +25,17 @@ class Element:
 
 
 class Game:
-    def __init__(self):
-        self.result = init
+    def __init__(self, start):
+        self.result = start
         self.rows = [[], [], [], [], [], [], [], [], []]
         self.columns = [[], [], [], [], [], [], [], [], []]
         self.squares = [[], [], [], [], [], [], [], [], []]
-        for rowIndex, row in enumerate(init):
+        for rowIndex, row in enumerate(start):
             for columnIndex, value in enumerate(row):
                 element = Element(rowIndex, columnIndex, value)
                 self.rows[rowIndex].append(element)
                 self.columns[columnIndex].append(element)
-                self.squares[(columnIndex // 3) +
-                              (3*(rowIndex//3))].append(element)
+                self.squares[(columnIndex // 3) + (3*(rowIndex//3))].append(element)
 
     def show(self):
         for row in self.rows:
@@ -47,7 +46,7 @@ class Game:
         for elementList in elementTable:
             values = [item.value for item in elementList if item.value]
             for element in elementList:
-                if element.value is None:
+                if element.value == 0:
                     element.updateValues(values)
                     if element.value:
                         return 1
@@ -56,7 +55,7 @@ class Game:
     def findUnique(self, elementTable):
         for elementList in elementTable:
             elementPending = [
-                element for element in elementList if element.value is None]
+                element for element in elementList if element.value == 0]
             for element in elementPending:
                 for option in element.options:
                     existingList = [
@@ -83,11 +82,23 @@ class Game:
 
 
 if __name__ == "__main__":
-    init = [[None, None, None, None, 5, None, 6, 9, None], [2, None, 5, 6, None, None, None, None, None], [6, None, None, None, None, 7, None, 3, None],
-            [None, None, 8, None, 2, None, None, 4, None], [4, None, None, 5, None, 9, None, None, 8], [None, 5, None, None, 3, None, 2, None, None],
-            [None, 7, None, 1, None, None, None, None, 4], [None, None, None, None, None, 5, 1, None, 7], [None, 1, 2, None, 7, None, None, None, None]]
+    # {"board":[[7,5,0,3,9,0,0,0,0],[1,0,4,0,6,8,0,0,0],[6,0,9,0,5,7,0,0,0],[2,0,3,5,0,0,0,0,0],[4,0,0,7,0,9,0,3,1],[0,9,7,1,0,3,6,4,0],[0,0,1,0,0,0,0,0,0],[5,4,8,0,0,2,7,1,6],[0,7,0,0,0,4,0,0,0]]}
+    init = [[7,5,0, 3,9,0, 0,0,0],
+            [1,0,4, 0,6,8, 0,0,0],
+            [6,0,9, 0,5,7, 0,0,0],
 
-    game = Game()
+            [2,0,3, 5,0,0, 0,0,0],
+            [4,0,0, 7,0,9, 0,3,1],
+            [0,9,7, 1,0,3, 6,4,0],
+            
+            [0,0,1, 0,0,0, 0,0,0],
+            [5,4,8, 0,0,2, 7,1,6],
+            [0,7,0, 0,0,4, 0,0,0]]
+    # init = [[0, 0, 0, 0, 5, 0, 6, 9, 0], [2, 0, 5, 6, 0, 0, 0, 0, 0], [6, 0, 0, 0, 0, 7, 0, 3, 0],
+    #         [0, 0, 8, 0, 2, 0, 0, 4, 0], [4, 0, 0, 5, 0, 9, 0, 0, 8], [0, 5, 0, 0, 3, 0, 2, 0, 0],
+    #         [0, 7, 0, 1, 0, 0, 0, 0, 4], [0, 0, 0, 0, 0, 5, 1, 0, 7], [0, 1, 2, 0, 7, 0, 0, 0, 0]]
+
+    game = Game(init)
     print("\nInitialization")
     game.show()
 
