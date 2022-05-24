@@ -12,7 +12,8 @@
             "VARIANT": "3.10-bullseye",
             // Options
             "NODE_VERSION": "none"
-        }
+        },
+        "target": "dev"
     },
     // Set *default* container specific settings.json values on container create.
     "settings": {
